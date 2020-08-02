@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -28,7 +28,7 @@ def criar():
     console = request.form['console']
     jogo = Jogo(nome, categoria, console)
     lista.append(jogo)
-    return render_template('lista.html', titulo='Jogos', subtituto='test', jogos=lista)
+    return redirect('/')
 
 #alterando o endereco e porta para iniciar o projeto
 #app.run(host='0.0.0.0', port=8080)
