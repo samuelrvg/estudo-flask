@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, flash
 
 app = Flask(__name__)
+app.secret_key = 'cursoflask'
 
 class Jogo:
     def __init__(self, nome, categoria, console):
@@ -28,6 +29,26 @@ def criar():
     console = request.form['console']
     jogo = Jogo(nome, categoria, console)
     lista.append(jogo)
+    return redirect('/')
+
+@app.route('/login')
+def login():
+    return render_template("login.html")
+
+@app.route('/autenticar', methods=['post',])
+def autenticar():
+    if 'mestra' == request.form['senha']:
+        session['usuario_logado'] = request.form['usuario']
+        flash('usuário logado com sucesso')
+        return redirect('/')
+    else:
+        flash('usuário não autenticado')
+        redirect('/login')
+
+@app.route('/logout')
+def logout():
+    session['usuario_logado'] = None
+    flash('usuário deslogado')
     return redirect('/')
 
 #alterando o endereco e porta para iniciar o projeto
